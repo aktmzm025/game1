@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milite.mapper.SkillMapper">
+	<select id="getSkillInfo" resultType="com.milite.dto.SkillDto">
+		select * from skills where
+		skill_id = #{skillID}
+	</select>
+
+	<select id="getSkillInfoByString"
+		resultType="com.milite.dto.SkillDto">
+		select * from skills where skill_id = #{skillID}
+	</select>
+
+	<select id="getSkillReward" resultType="com.milite.dto.SkillDto">
+		select * from skills
+		<where>
+			<if test="job != null">
+				and (skill_job = #{job} or skill_job = 'Common')
+			</if>
+			<if test="rarity != null">
+				and rarity = #{rarity}
+			</if>
+			<if test="type != null">
+				and (skill_type = #{type} or skill_type = 'Basic')
+			</if>
+			<if test="element != null">
+				and (element = #{element} or element = 'None')
+			</if>
+		</where>
+		order by RAND()
+	</select>
+</mapper>
